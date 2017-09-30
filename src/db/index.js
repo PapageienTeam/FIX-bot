@@ -62,8 +62,10 @@ const db = module.exports = {
 					console.warn(`No user entry found for github_login = ${user_github_login}`);
 				}
 			}
-			await addRel(assignee, 'assigned');
-			await addRel(creator, 'created');
+			if (assignee)
+				await addRel(assignee, 'assigned');
+			if (creator)
+				await addRel(creator, 'created');
 		},
 
 		listBySlackUserID: async(user_slack_id, filter = null) => {
