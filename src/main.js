@@ -9,6 +9,7 @@ async function main() {
   console.log("Start");
   await config_handler.loadConfig('config.json');
   await bot.connect("ai-issuebot");
+  var timeout;
   bot.on('receive', async(data) => {
      // Weiterverarbeitung
      var reactiontype = texterkennung.reaction(data);
@@ -24,6 +25,12 @@ async function main() {
      } else if (reactiontype === 3) {
         var issues = await database.issue.listBySlackUserID(userid);
         bot.send("Vorschlag: Anzahl der offenen Issues " + issues.length);
+     } else if (reactiontype === 4) {
+       setInterval(() => {bot.send("hi!")}, 1000)
+     } else if (reactiontype === 5) {
+        if (timeout) {
+          clearTimeout(timeout);
+        }
      }
   });
 }

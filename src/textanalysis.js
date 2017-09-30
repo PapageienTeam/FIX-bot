@@ -3,6 +3,8 @@ var chatConnector = require('./slack-bot/slack-api-calls.js');
 var keywordsBored = /(langweilig|Langeweile|langweile|!bored|Mir ist langweilig!)/i
 var keywordsShowIssues = /(!showIssues|Zeig mir meine offenen Issues!|!issues)/i
 var keywordsLifesign = /(!lifesign|!ping|!pong|!nochda|Bist du noch da?)/i
+var keywordsStartTimer = /(Bekämpfe meine langeweile)/i
+var keywordsStopTimer = /(Mir ist nie langweilig)/i
 
 //Testing messages for specific keywords
 
@@ -24,6 +26,14 @@ function wantsLifesign(message){
     return (contains(message, keywordsLifesign));
 }
 
+function shouldStartTimer(message) {
+    return contains(message, keywordsStartTimer);
+}
+
+function shouldStopTimer(message) {
+    return contains(message, keywordsStopTimer);
+}
+
 /**
 * Returns wanted reation in form of an integer
 * 0 = no reaction
@@ -35,10 +45,18 @@ function reaction(message){
     if(wantsIssues(message)) return 1; 
     else if(wantsLifesign(message)) return 2;
     else if (isBored(message)) return 3;
+    else if (shouldStartTimer(message)) return 4;
+    else if (shouldStopTimer(message)) return 5;
     else return -1;
 }
 
 //Export checking for Boredom/Issue-Command/Ping-Command
-module.exports = {isBored:isBored,wantsIssues:wantsIssues,wantsLifesign:wantsLifesign,reaction:reaction}
+module.exports = {
+    isBored: isBored,
+    wantsIssues: wantsIssues,
+    wantsLifesign: wantsLifesign,
+    reaction: reaction,
+    shouldStartTimer: shouldStartTimer,
+    shouldStopTimer: shouldStopTimer}
 
 // Rem best grill ヽ༼ຈل͜ຈ༽ﾉ //
