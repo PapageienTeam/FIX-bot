@@ -15,6 +15,9 @@ async function main() {
      var userid = data.user;
      if(reactiontype === 1){
         var issues = await database.issue.listBySlackUserID(userid);
+        if(issues.length > 0){
+           bot.send("Issues: " + issues[0].url);
+        }
         bot.send("Langeweile: Anzahl der offenen Issues " + issues.length);
      } else if (reactiontype === 2) {
         bot.send("<@here>; Ich bin noch da.");
