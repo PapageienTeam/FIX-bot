@@ -32,6 +32,7 @@ function wantsLifesign(message){
 * 3 = display Issues, "friendly suggestion" sendMessage (<@MEMBERID>+ "bla") | Array: db.issue.listbySlackUserID(MEMBERID) => String
 **/
 function reaction(message){
+    if (message === undefined) return;
     if(wantsIssues(message)) return 1; 
     else if(wantsLifesign(message)) return 2;
     else if (isBored(message)) return 3;
