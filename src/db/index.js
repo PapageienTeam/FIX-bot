@@ -70,7 +70,7 @@ const db = module.exports = {
 
 		listBySlackUserID: async(user_slack_id, filter = null) => {
 			validateString(user_slack_id, 'user_slack_id');
-			let userRes = await pool.query('SELECT github_id FROM "User" WHERE slack_id = $1', [user_slack_id]);
+			let userRes = await pool.query('SELECT github_login FROM "User" WHERE slack_id = $1', [user_slack_id]);
 			if (userRes.rows.length > 0) {
 				let user_github_id = res.rows[0].github_id;
 				let res = await pool.query('SELECT status, title, url FROM "Issue" WHERE github_id = $1', [user_github_id]);
