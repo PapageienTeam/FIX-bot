@@ -70,19 +70,37 @@ const db = module.exports = {
 
 		listBySlackUserID: async(user_slack_id, filter = null) => {
 			validateString(user_slack_id, 'user_slack_id');
+<<<<<<< HEAD
 			let userRes = await pool.query('SELECT github_login FROM "User" WHERE slack_id = $1', [user_slack_id]);
+=======
+			let userRes = await pool.query('SELECT id FROM "User" WHERE slack_id = $1', [user_slack_id]);
+>>>>>>> Complete database integration
 			if (userRes.rows.length > 0) {
-				let user_github_id = res.rows[0].github_id;
-				let res = await pool.query('SELECT status, title, url FROM "Issue" WHERE github_id = $1', [user_github_id]);
-				let issues = [];
-				for(let row of res.rows) {
-					if (row.status === 0 /* open */) {
-						issues.push({
-							title: row.title,
-							url: row.url
-						});
-					}
-				}
+				let user_id = userRes.rows[0].id;
+            let rels = await pool.query('SELECT * FROM "user_issue_rel" WHERE user_id = $1', [user_id]);
+            let issues = [];
+
+            function foundIssue(ghid) {
+               for(let issue of issues)
+                  if (issue._ghid === ghid)
+                     return true;
+               return false;
+            }
+
+            for(let rel of rels.rows) {
+               console.log("userid: ", user_id);
+   				let res = await pool.query('SELECT status, title, url FROM "Issue" WHERE github_id = $1', [rel.issue_github_id]);
+   				for(let row of res.rows) {
+   					if (row.status === 0 /* open */ && !foundIssue(rel.issue_github_id)) {
+   						issues.push({
+                        _ghid: rel.issue_github_id,
+   							title: row.title,
+   							url: row.url
+   						});
+   					}
+   				}
+            }
+
 				return issues;
 			} else {
 				console.warn(`No user entry found for slack_id = ${user_slack_id}`);
