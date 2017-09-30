@@ -1,5 +1,4 @@
 var chatConnector = require('./slack-bot/slack-api-calls.js');
-const cognitiveServices = require('cognitive-services');
 
 var keywordsBored = /(langweilig|Langeweile|langweile)/i
 var keywordsShowIssues = /(!showIssues)/i
