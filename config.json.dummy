@@ -1,0 +1,9 @@
+{
+  "PGUSER":"postgres",
+  "PGHOST":"localhost",
+  "PGPORT":5432,
+  "PGPASSWORD":"password",
+  "PGDATABASE":"gitbot",
+  "GIT_ORGANISATION": "team",
+  "SLACK_BOT_TOKEN": "token"
+}
