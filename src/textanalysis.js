@@ -1,8 +1,8 @@
 var chatConnector = require('./slack-bot/slack-api-calls.js');
 
-var keywordsBored = /(langweilig|Langeweile|langweile)/i
-var keywordsShowIssues = /(!showIssues)/i
-var keywordsLifesign = /(!lifesign)/i
+var keywordsBored = /(langweilig|Langeweile|langweile|!bored|Mir ist langweilig!)/i
+var keywordsShowIssues = /(!showIssues|Zeig mir meine offenen Issues!|!issues)/i
+var keywordsLifesign = /(!lifesign|!ping|!pong|!nochda|Bist du noch da?)/i
 
 //Testing messages for specific keywords
 
@@ -13,7 +13,7 @@ function contains(message,keywords){
 
 //Checks for "keywordsBored" in a received String
 function isBored(message){
-    return (contains(message, keywordsShowIssues));
+    return (contains(message, keywordsBored));
 }
 //Checks for "keywordsShowIssues" in a received String
 function wantsIssues(message){
