@@ -3,8 +3,8 @@ const textanalysis = require("../src/textanalysis");
 var testLangeweile = "Mir ist langweilig";
 var testIssues = "!showIssues bitte";
 var testPing = "!lifesign";
-const startTimerMessage = "Bekämpfe meine langeweile"
-const stopTimerMessage = "Mir ist nie langweilig"
+const startTimerMessage = "Setze den timer"
+const stopTimerMessage = "Stoppe den timer"
 
 test('isBored funktioniert', () => {
 	expect(()=> isBored(testLangeweile)).toBeTruthy();
