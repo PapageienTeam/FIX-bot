@@ -13,6 +13,7 @@ async function main() {
    bot.on('receive', async(data) => {
       // Weiterverarbeitung
       if(data.text){
+          console.log("Received message ", data.text);
          var reactiontype = texterkennung.reaction(data);
          var userid = data.user;
          if(reactiontype === 1){
