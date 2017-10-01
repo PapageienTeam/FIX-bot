@@ -18,7 +18,7 @@ const validateEnum = (val, name, max) => {
 		throw new TypeError(`${name} must be an integer in the range of [0..${max}].`);
 };
 
-function foundIssue(issues, ghid) {
+const foundIssue = (issues, ghid) => {
 	for(let issue of issues)
 	   if (issue._ghid === ghid)
 		 return true;
@@ -116,11 +116,8 @@ const db = module.exports = {
 		}
 	}
 };
-async function findUserIdFromSlackId(user_slack_id) {
-    return await pool.query('SELECT id FROM "User" WHERE slack_id = $1', [user_slack_id]);
-}
+const findUserIdFromSlackId = async (user_slack_id) =>
+    await pool.query('SELECT id FROM "User" WHERE slack_id = $1', [user_slack_id]);
 
-function issueIsOpen(row) {
-    return row.status === 0;
-}
-
+const issueIsOpen = (row) => 
+    row.status === 0;
