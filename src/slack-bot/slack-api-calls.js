@@ -25,6 +25,7 @@ var connect = function (connecting_channel){
    var promise = new Promise((resolve) => {
       rtm.on(CLIENT_EVENTS.RTM.RTM_CONNECTION_OPENED, () => {
          console.log("Connected");
+         send("'Allo! I bims der GitBot!");
          startListen(this);
          resolve();
       });
@@ -34,7 +35,7 @@ var connect = function (connecting_channel){
 };
 
 var send = function(message){
-   console.log("Send");
+   console.log("Sent",message);
    rtm.sendMessage(message, channel);
 };
 
