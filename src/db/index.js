@@ -103,5 +103,20 @@ const db = module.exports = {
 				console.warn(`No user entry found for slack_id = ${user_slack_id}`);
 			}
 		}
+
+		listIssues: async() => {
+			const result = await pool.query('SELECT status, title, url FROM "Issue"');
+			const issues = [];
+			for(const issue of result.rows) {
+				if (issueIsOpen(issue)) {
+					issues.push(issue);
+				}
+			}
+			return issues;
+		}
 	}
 };
+function issueIsOpen(row) {
+    return row.status === 0;
+}
+
