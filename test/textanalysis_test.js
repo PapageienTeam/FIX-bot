@@ -1,29 +1,67 @@
 const textanalysis = require("../src/textanalysis");
 
-var testLangeweile = "Mir ist langweilig";
-var testIssues = "!showIssues bitte";
-var testPing = "!lifesign";
-const startTimerMessage = "Setze den timer"
-const stopTimerMessage = "Stoppe den timer"
+const reactionTestDescriptions = [
+	{
+		name: 'Ping',
+		text: [
+			'ping',
+		],
+		expected: 2,
+	},
+	{
+		name: 'Issue',
+		text: [
+			'Mein issue is jetzt fettig',
+		],
+		expected: 1,
+	},
+	{
+		name: 'Greeting',
+		text: [
+			'Hallo, bot!',
+		],
+		expected: 6,
+	},
+	{
+		name: 'Start timer',
+		text: [
+			'Start the time!',
+		],
+		expected: 4,
+	},
+	{
+		name: 'Stop timer',
+		text: [
+			'Stop the time!',
+		],
+		expected: 5,
+	},
+	{
+		name: 'Bored',
+		text: [
+			'Ich hab langeweile',
+			'Ich ess mal nen kuchen',
+			'Ich kicker jetzt statt zu arbeiten',
+			'Erst mal nen kaffee',
+			'Wer will clubmate?',
+			'Ich hol mir ne cola',
+			'Ein wenig schwarzes gold wäre jetzt echt mal schön',
+		],
+		expected: 3,
+	},
+	{
+		name: 'Nothing',
+		text: [
+			'Um 20:15 im Auditorium sein!',
+		],
+		expected: -1,
+	},
+]
 
-test('isBored funktioniert', () => {
-	expect(()=> isBored(testLangeweile)).toBeTruthy();
-});
-test('wantsIssues funktioniert', () => {
-	expect(()=> wantsIssues(testIssues)).toBeTruthy();
-});
-test('wantsLifesign funktioniert', () => {
-	expect(()=> wantsLifesign(testPing)).toBeTruthy();
-});
-test('reaction funktioniert',() => {
-	//	console.log({text:testPing});
-		expect(textanalysis.reaction({text:testPing})).toEqual(2);
-});
-
-test('Detects timer start', () => {
-	expect(textanalysis.shouldStartTimer({text: startTimerMessage})).toBe(true);
-})
-
-test('Detects timer stop', () => {
-	expect(textanalysis.shouldStopTimer({text: stopTimerMessage})).toBe(true);
-})
+for(const testDescription of reactionTestDescriptions) {
+	for(const inputText of testDescription.text) {
+		test(`Detects "${inputText}" to be ${testDescription.name}`, () => {
+			expect(textanalysis.reaction({text: inputText})).toBe(testDescription.expected);
+		});
+	};
+}
