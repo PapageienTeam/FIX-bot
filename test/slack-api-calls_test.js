@@ -1,3 +1,8 @@
+beforeAll(() => {
+    const config = require('../src/config_handler');
+    return config.loadConfig('./config.json');
+})
+
 test('Slackverbindung testen', () => {
    const sut = require('../src/slack-bot/slack-api-calls');
    expect.assertions(0);

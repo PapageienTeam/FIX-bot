@@ -1,13 +1,13 @@
 'use strict';
 
 const config_handler = require('./config_handler')
-const bot = require('./slack-bot/slack-api-calls');
-const texterkennung = require('./textanalysis');
 const database = require('./db');
 
 async function main() {
    console.log("Start");
    await config_handler.loadConfig('config.json');
+   const texterkennung = require('./textanalysis');
+   const bot = require('./slack-bot/slack-api-calls');
    await bot.connect("ai-issuebot");
    var timeout = undefined;
    bot.on('receive', async(data) => {

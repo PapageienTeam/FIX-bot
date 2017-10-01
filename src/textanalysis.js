@@ -1,5 +1,3 @@
-var chatConnector = require('./slack-bot/slack-api-calls.js');
-
 var keywordsBored = /(langweilig|Langeweile|langweile|!bored|Mir ist langweilig!)/i
 var keywordsShowIssues = /(!showIssues|Zeig mir meine offenen Issues!|!issues)/i
 var keywordsLifesign = /(!lifesign|!ping|!pong|!nochda|Bist du noch da?)/i
