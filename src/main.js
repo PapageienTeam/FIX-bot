@@ -33,7 +33,9 @@ async function main() {
             } else {
                bot.send("Gönn dir 'ne Pause, du hast gut gearbeitet! Keine offenen Issues!");
             }
-         } else if (reactiontype === 4) {
+        } else if (reactiontype === 6){
+            bot.send("Hallo <@" + data.user + ">");
+        } else if (reactiontype === 4) {
           timeout = setInterval(() => {bot.send("Seid ihr alle schön am Arbeiten?")}, 5000)
          } else if (reactiontype === 5) {
             if (timeout) {

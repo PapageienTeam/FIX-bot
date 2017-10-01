@@ -3,6 +3,7 @@ var keywordsShowIssues = /(!showIssues|Zeig mir meine offenen Issues!|!issues)/i
 var keywordsLifesign = /(!lifesign|!ping|!pong|!nochda|Bist du noch da?)/i
 var keywordsStartTimer = /(Setze den timer)/i
 var keywordsStopTimer = /(Stoppe den timer)/i
+var keywordsGreeting = /(Hallo gitbot)/i
 
 //Testing messages for specific keywords
 
@@ -31,17 +32,21 @@ function shouldStartTimer(message) {
 function shouldStopTimer(message) {
     return contains(message, keywordsStopTimer);
 }
+function wantsGreeting(message) {
+    return contains(message,keywordsGreeting);
+}
 
 /**
 * Returns wanted reation in form of an integer
 * 0 = no reaction
 * 1 = display Issues, "wanted message" sendMessage (<@MEMBERID>+ "bla") | Array: db.issue.listbySlackUserID(MEMBERID) => String
-* 2 = Ping-Command  sendMessage (<@here> + "Hi leute") 
+* 2 = Ping-Command  sendMessage (<@here> + "Hi leute")
 * 3 = display Issues, "friendly suggestion" sendMessage (<@MEMBERID>+ "bla") | Array: db.issue.listbySlackUserID(MEMBERID) => String
 **/
 function reaction(message){
-    if(wantsIssues(message)) return 1; 
+    if(wantsIssues(message)) return 1;
     else if(wantsLifesign(message)) return 2;
+    else if (wantsGreeting(message)) return 6;
     else if (isBored(message)) return 3;
     else if (shouldStartTimer(message)) return 4;
     else if (shouldStopTimer(message)) return 5;
