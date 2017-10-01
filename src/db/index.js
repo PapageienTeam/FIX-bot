@@ -102,7 +102,7 @@ const db = module.exports = {
 			} else {
 				console.warn(`No user entry found for slack_id = ${user_slack_id}`);
 			}
-		}
+		},
 
 		listIssues: async() => {
 			const result = await pool.query('SELECT status, title, url FROM "Issue"');
