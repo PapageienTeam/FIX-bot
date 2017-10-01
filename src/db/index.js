@@ -85,7 +85,6 @@ const db = module.exports = {
             }
 
             for(let rel of rels.rows) {
-               console.log("userid: ", user_id);
    				let res = await pool.query('SELECT status, title, url FROM "Issue" WHERE github_id = $1', [rel.issue_github_id]);
    				for(let row of res.rows) {
    					if (row.status === 0 /* open */ && !foundIssue(rel.issue_github_id)) {
