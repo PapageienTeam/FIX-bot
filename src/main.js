@@ -9,6 +9,7 @@ async function main() {
    console.log("Start");
    await config_handler.loadConfig('config.json');
    await bot.connect("ai-issuebot");
+   var timeout;
    bot.on('receive', async(data) => {
       // Weiterverarbeitung
       if(data.text){
@@ -28,6 +29,12 @@ async function main() {
                bot.send("Issues: " + issues[0].url);
             } else {
                bot.send("Keine offenen Issues");
+            }
+         } else if (reactiontype === 4) {
+            setInterval(() => {bot.send("hi!")}, 1000)
+         } else if (reactiontype === 5) {
+            if (timeout) {
+               clearTimeout(timeout);
             }
          }
       }
