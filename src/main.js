@@ -36,7 +36,14 @@ async function main() {
         } else if (reactiontype === 6){
             bot.send("Hallo <@" + data.user + ">");
         } else if (reactiontype === 4) {
-          timeout = setInterval(() => {bot.send("Seid ihr alle schön am Arbeiten?")}, 5000)
+          timeout = setInterval(async() => {
+             bot.send("Seid ihr alle schön am Arbeiten?");
+             var issues = await database.issue.listIssues();
+             if (issues.length > 2){
+                bot.send("Offene Issues: ");
+                bot.send(issues[0].url + "\n" + issues[1].url + "\n" + issues[2].url);
+             }
+          }, 10000);
          } else if (reactiontype === 5) {
             if (timeout) {
                clearTimeout(timeout);
