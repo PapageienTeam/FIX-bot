@@ -18,12 +18,8 @@ const validateEnum = (val, name, max) => {
 		throw new TypeError(`${name} must be an integer in the range of [0..${max}].`);
 };
 
-const foundIssue = (issues, ghid) => {
-	for(let issue of issues)
-	   if (issue._ghid === ghid)
-		 return true;
-	return false;
-}
+const foundIssue = (issues, ghid) =>
+	issues.some((issue) => issue.ghid === ghid)
 
 const db = module.exports = {
 	rel_types: ['assigned', 'created', 'mentioned', 'subscribed'],
@@ -106,13 +102,7 @@ const db = module.exports = {
 
 		listIssues: async() => {
 			const result = await pool.query('SELECT status, title, url FROM "Issue"');
-			const issues = [];
-			for(const issue of result.rows) {
-				if (issueIsOpen(issue)) {
-					issues.push(issue);
-				}
-			}
-			return issues;
+			return issues = result.rows.filter(issueIsOpen);
 		}
 	}
 };
