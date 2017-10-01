@@ -45,6 +45,9 @@ const patterns = {
     bored1: ['kuchen'],
     bored2: ['kicker'],
     bored3: ['kaffee'],
+    bored4: ['clubmate'],
+    bored5: ['cola'],
+    bored6: ['schwarz', 'gold'],
     startTimer: ['start', 'Time'],
     stopTimer: ['stop', 'Time']
 };
@@ -67,6 +70,9 @@ function reaction(message){
             case 'bored1':
             case 'bored2':
             case 'bored3':
+            case 'bored4':
+            case 'bored5':
+            case 'bored6':
                 return 3;
             case 'startTimer':
                 return 4;
