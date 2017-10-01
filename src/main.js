@@ -31,7 +31,7 @@ async function main() {
                bot.send("Keine offenen Issues");
             }
          } else if (reactiontype === 4) {
-            setInterval(() => {bot.send("hi!")}, 1000)
+          timeout = setInterval(() => {bot.send("hi!")}, 1000)
          } else if (reactiontype === 5) {
             if (timeout) {
                clearTimeout(timeout);
