@@ -13,25 +13,28 @@ async function main() {
    bot.on('receive', async(data) => {
       // Weiterverarbeitung
       if(data.text){
+          console.log("Received message ", data.text);
          var reactiontype = texterkennung.reaction(data);
          var userid = data.user;
          if(reactiontype === 1){
             var issues = await database.issue.listBySlackUserID(userid);
             if(issues.length > 0){
-               bot.send("Issues: " + issues[0].url);
-            }
-            bot.send("Langeweile: Anzahl der offenen Issues " + issues.length);
+               bot.send("Du könntest dieses Issue bearbeiten " + issues[0].url);
+               if (issues.length > 1) bot.send("Alternativ hast du noch " + (issues.length-1) + " offene Issues!");
+            }else {
+               bot.send("Du warst fleißig! Keine offenen Issues!");
+           }
          } else if (reactiontype === 2) {
-            bot.send("<@here>; Ich bin noch da.");
+            bot.send("<@" + data.user + "> Ich bin noch da.");
          } else if (reactiontype === 3) {
             var issues = await database.issue.listBySlackUserID(userid);
             if(issues.length > 0){
-               bot.send("Issues: " + issues[0].url);
+               bot.send("Zurück an die Arbeit! Du hast noch " + issues.length + " offene Issues, zum Beispiel dieses hier: " + issues[0].url);
             } else {
-               bot.send("Keine offenen Issues");
+               bot.send("Gönn dir 'ne Pause, du hast gut gearbeitet! Keine offenen Issues!");
             }
          } else if (reactiontype === 4) {
-          timeout = setInterval(() => {bot.send("hi!")}, 5000)
+          timeout = setInterval(() => {bot.send("Seid ihr alle schön am Arbeiten?")}, 5000)
          } else if (reactiontype === 5) {
             if (timeout) {
                clearTimeout(timeout);
