@@ -19,10 +19,10 @@ async function main() {
             var issues = await database.issue.listBySlackUserID(userid);
             if(issues.length > 0){
                bot.send("Du könntest dieses Issue bearbeiten " + issues[0].url);
-               bot.send("Alternativ hast du noch " + issues.length-1 + " offene Issues!");
+               if (issues.length > 1) bot.send("Alternativ hast du noch " + (issues.length-1) + " offene Issues!");
             }else {
                bot.send("Du warst fleißig! Keine offenen Issues!");
-           }x
+           }
          } else if (reactiontype === 2) {
             bot.send("<@" + data.user + "> Ich bin noch da.");
          } else if (reactiontype === 3) {
@@ -33,7 +33,7 @@ async function main() {
                bot.send("Gönn dir 'ne Pause, du hast gut gearbeitet! Keine offenen Issues!");
             }
          } else if (reactiontype === 4) {
-          timeout = setInterval(() => {bot.send("hi!")}, 5000)
+          timeout = setInterval(() => {bot.send("Seid ihr alle schön am Arbeiten?")}, 5000)
          } else if (reactiontype === 5) {
             if (timeout) {
                clearTimeout(timeout);
