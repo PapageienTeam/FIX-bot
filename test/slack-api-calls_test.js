@@ -1,9 +1,15 @@
+'use strict';
+
+// Tests in this module are skipped, because they are integration tests.
+// Please make sure that an api token is available in the configuration
+// if you intend to run these tests.
+
 beforeAll(() => {
     const config = require('../src/config_handler');
     return config.loadConfig('./config.json');
 })
 
-test('Slackverbindung testen', () => {
+test.skip('Slackverbindung testen', () => {
    const sut = require('../src/slack-bot/slack-api-calls');
    expect.assertions(0);
    return sut.connect("ai-issuebot").then( function (data){
@@ -11,7 +17,7 @@ test('Slackverbindung testen', () => {
    });
 });
 
-test('Nachricht senden', async() => {
+test.skip('Nachricht senden', async() => {
    const sut = require('../src/slack-bot/slack-api-calls');
    expect.assertions(0);
    return sut.connect("ai-issuebot").then( function (data){
@@ -20,7 +26,7 @@ test('Nachricht senden', async() => {
    });
 });
 
-test('Nachricht empfangen', async() => {
+test.skip('Nachricht empfangen', async() => {
    const sut = require('../src/slack-bot/slack-api-calls');
    expect.assertions(1);
    await sut.connect("ai-issuebot");
@@ -33,8 +39,9 @@ test('Nachricht empfangen', async() => {
    });
 });
 
-/*
-test('Nachricht empfangen', async() => {
+// This test requires another user to send a message into the given channel
+// during test execution.
+test.skip('Nachricht empfangen', async() => {
    const sut = require('../src/slack-bot/slack-api-calls');
    expect.assertions(0);
    return sut.connect("ai-issuebot").then(function(data){
@@ -44,4 +51,4 @@ test('Nachricht empfangen', async() => {
       });
       return promise;
    });
-});*/
+});

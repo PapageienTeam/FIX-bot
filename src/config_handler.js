@@ -4,13 +4,20 @@ const fs = require('fs-extra');
 
 async function loadConfig(FilePath) {
   let config = await fs.readJson(FilePath);
-  for(let key in config) {
-    process.env[key] = config[key];
-  }
+  loadConfigIntoEnvironment(config);
 }
 
 function getConfigByKey(Key) {
   return process.env[Key];
 }
 
-module.exports = {loadConfig};
+function loadConfigIntoEnvironment(config) {
+  for (const key in config) {
+    process.env[key] = config[key];
+  }
+}
+
+module.exports = {
+  loadConfig,
+  loadConfigIntoEnvironment,
+};

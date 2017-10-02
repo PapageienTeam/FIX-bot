@@ -18,6 +18,9 @@ const validateEnum = (val, name, max) => {
 		throw new TypeError(`${name} must be an integer in the range of [0..${max}].`);
 };
 
+const foundIssue = (issues, ghid) =>
+	issues.some((issue) => issue.ghid === ghid)
+
 const db = module.exports = {
 	rel_types: ['assigned', 'created', 'mentioned', 'subscribed'],
 	issue_status_types: ['open', 'closed'],
@@ -70,32 +73,26 @@ const db = module.exports = {
 
 		listBySlackUserID: async(user_slack_id, filter = null) => {
 			validateString(user_slack_id, 'user_slack_id');
-			let userRes = await pool.query('SELECT id FROM "User" WHERE slack_id = $1', [user_slack_id]);
+			let userRes = await findUserIdFromSlackId(user_slack_id);
 			if (userRes.rows.length > 0) {
 				let user_id = userRes.rows[0].id;
-            //console.log("USER: ", user_id);
-            let rels = await pool.query('SELECT * FROM "user_issue_rel" WHERE user_id = $1', [user_id]);
-            let issues = [];
+            	//console.log("USER: ", user_id);
+            	let rels = await pool.query('SELECT * FROM "user_issue_rel" WHERE user_id = $1', [user_id]);
+            	let issues = [];
 
-            function foundIssue(ghid) {
-               for(let issue of issues)
-                  if (issue._ghid === ghid)
-                     return true;
-               return false;
-            }
-
-            for(let rel of rels.rows) {
-   				let res = await pool.query('SELECT status, title, url FROM "Issue" WHERE github_id = $1', [rel.issue_github_id]);
-   				for(let row of res.rows) {
-   					if (row.status === 0 /* open */ && !foundIssue(rel.issue_github_id)) {
-   						issues.push({
-                        _ghid: rel.issue_github_id,
-   							title: row.title,
-   							url: row.url
-   						});
+            	for(let rel of rels.rows) {
+               		console.log("userid: ", user_id);
+   					let res = await pool.query('SELECT status, title, url FROM "Issue" WHERE github_id = $1', [rel.issue_github_id]);
+   					for(let row of res.rows) {
+   						if (row.status === 0 /* open */ && !foundIssue(issues, rel.issue_github_id)) {
+   							issues.push({
+                        	_ghid: rel.issue_github_id,
+   								title: row.title,
+   								url: row.url
+   							});
+   						}
    					}
-   				}
-            }
+            	}
 
 				return issues;
 			} else {
@@ -105,17 +102,12 @@ const db = module.exports = {
 
 		listIssues: async() => {
 			const result = await pool.query('SELECT status, title, url FROM "Issue"');
-			const issues = [];
-			for(const issue of result.rows) {
-				if (issueIsOpen(issue)) {
-					issues.push(issue);
-				}
-			}
-			return issues;
+			return issues = result.rows.filter(issueIsOpen);
 		}
 	}
 };
-function issueIsOpen(row) {
-    return row.status === 0;
-}
+const findUserIdFromSlackId = async (user_slack_id) =>
+    await pool.query('SELECT id FROM "User" WHERE slack_id = $1', [user_slack_id]);
 
+const issueIsOpen = (row) => 
+    row.status === 0;
